@@ -41,7 +41,6 @@ namespace apCaminhosEmMarte
               if (rbHashDuplo.Checked)
                 tabela = new HashDuplo<Cidade>();
 
-
         var arquivo = new StreamReader(dlgAbrir.FileName);
         while (! arquivo.EndOfStream) 
         {
@@ -49,9 +48,22 @@ namespace apCaminhosEmMarte
           umaCidade.LerRegistro(arquivo);
           tabela.Inserir(umaCidade);
         }
-
+        lsbCidades.Items.Clear();  // limpa o listBox
+        var asCidades = tabela.Conteudo();
+        foreach (Cidade cid in asCidades)
+          lsbCidades.Items.Add(cid);
         arquivo.Close();
       }
+    }
+
+    private void FrmCaminhos_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      // abrir o arquivo para saida, se houver um arquivo selecionado
+      // obter todo o conteúdo da tabela de hash
+      // percorrer o conteúdo da tabela de hash, acessando
+      // cada cidade individualmente e usar esse objeto Cidade
+      // para gravar seus próprios dados no arquivo
+      // fechar o arquivo ao final do percurso
     }
   }
 }

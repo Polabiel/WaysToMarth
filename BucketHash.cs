@@ -61,7 +61,6 @@ using System.Collections.Generic;
       for (int i = 0; i < dados.Length; i++)
         if (dados[i].Count > 0)
         {
-          string linha = $"{i,5} : ";
           foreach (Tipo item in dados[i])
             saida.Add(item);
         }

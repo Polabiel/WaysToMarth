@@ -69,7 +69,7 @@
       this.tabControl1.Location = new System.Drawing.Point(4, 2);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(598, 361);
+      this.tabControl1.Size = new System.Drawing.Size(681, 361);
       this.tabControl1.TabIndex = 0;
       // 
       // tpCidades
@@ -90,7 +90,7 @@
       this.tpCidades.Location = new System.Drawing.Point(4, 22);
       this.tpCidades.Name = "tpCidades";
       this.tpCidades.Padding = new System.Windows.Forms.Padding(3);
-      this.tpCidades.Size = new System.Drawing.Size(590, 335);
+      this.tpCidades.Size = new System.Drawing.Size(673, 335);
       this.tpCidades.TabIndex = 0;
       this.tpCidades.Text = "Cidades";
       this.tpCidades.UseVisualStyleBackColor = true;
@@ -101,9 +101,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.pbMapa.Image = ((System.Drawing.Image)(resources.GetObject("pbMapa.Image")));
-      this.pbMapa.Location = new System.Drawing.Point(199, 64);
+      this.pbMapa.Location = new System.Drawing.Point(275, 60);
       this.pbMapa.Name = "pbMapa";
-      this.pbMapa.Size = new System.Drawing.Size(383, 263);
+      this.pbMapa.Size = new System.Drawing.Size(395, 263);
       this.pbMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
       this.pbMapa.TabIndex = 12;
       this.pbMapa.TabStop = false;
@@ -112,11 +112,14 @@
       // 
       this.lsbCidades.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+      this.lsbCidades.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.lsbCidades.FormattingEnabled = true;
+      this.lsbCidades.ItemHeight = 14;
       this.lsbCidades.Location = new System.Drawing.Point(10, 193);
       this.lsbCidades.Name = "lsbCidades";
       this.lsbCidades.ScrollAlwaysVisible = true;
-      this.lsbCidades.Size = new System.Drawing.Size(178, 134);
+      this.lsbCidades.Size = new System.Drawing.Size(259, 130);
+      this.lsbCidades.Sorted = true;
       this.lsbCidades.TabIndex = 11;
       // 
       // btnListar
@@ -218,7 +221,7 @@
       this.groupBox1.Controls.Add(this.rbBucketHash);
       this.groupBox1.Location = new System.Drawing.Point(4, 4);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(584, 54);
+      this.groupBox1.Size = new System.Drawing.Size(667, 54);
       this.groupBox1.TabIndex = 0;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = " Técnica de Hash desejada ";
@@ -226,7 +229,7 @@
       // btnLerArquivo
       // 
       this.btnLerArquivo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnLerArquivo.Location = new System.Drawing.Point(507, 16);
+      this.btnLerArquivo.Location = new System.Drawing.Point(590, 16);
       this.btnLerArquivo.Name = "btnLerArquivo";
       this.btnLerArquivo.Size = new System.Drawing.Size(71, 23);
       this.btnLerArquivo.TabIndex = 4;
@@ -295,10 +298,11 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(601, 363);
+      this.ClientSize = new System.Drawing.Size(684, 363);
       this.Controls.Add(this.tabControl1);
       this.Name = "FrmCaminhos";
       this.Text = "Caminhos em Marte - Ra1 - Ra2";
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmCaminhos_FormClosing);
       this.tabControl1.ResumeLayout(false);
       this.tpCidades.ResumeLayout(false);
       this.tpCidades.PerformLayout();
