@@ -27,31 +27,35 @@ namespace apCaminhosEmMarte
 
     private void btnLerArquivo_Click(object sender, EventArgs e)
     {
-      if (dlgAbrir.ShowDialog() == DialogResult.OK)
-      {
+        if (dlgAbrir.ShowDialog() != DialogResult.OK)
+            return;
+
         if (rbBucketHash.Checked)
-           tabela = new BucketHash<Cidade>();
-        else
-          if (rbHashLinear.Checked)
-             tabela = new HashLinear<Cidade>();
-          else 
-            if (rbHashQuadratico.Checked)
-               tabela = new HashQuadratico<Cidade>();
-            else
-              if (rbHashDuplo.Checked)
-                tabela = new HashDuplo<Cidade>();
+            tabela = new BucketHash<Cidade>();
+        else if (rbHashLinear.Checked)
+            tabela = new HashLinear<Cidade>();
+        else if (rbHashQuadratico.Checked)
+            tabela = new HashQuadratico<Cidade>();
+        else if (rbHashDuplo.Checked)
+            tabela = new HashDuplo<Cidade>();
 
-
-        var arquivo = new StreamReader(dlgAbrir.FileName);
-        while (! arquivo.EndOfStream) 
+        try
         {
-          Cidade umaCidade = new Cidade();
-          umaCidade.LerRegistro(arquivo);
-          tabela.Inserir(umaCidade);
+            using (var arquivo = new StreamReader(dlgAbrir.FileName))
+            {
+                while (!arquivo.EndOfStream)
+                {
+                    Cidade umaCidade = new Cidade();
+                    umaCidade.LerRegistro(arquivo);
+                    tabela.Inserir(umaCidade);
+                }
+            }
         }
-
-        arquivo.Close();
-      }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erro ao ler o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
-  }
+
+   }
 }
