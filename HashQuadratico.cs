@@ -10,20 +10,17 @@ namespace apCaminhosEmMarte
             where Tipo : IRegistro<Tipo>
     {
         private Tipo[] tabela;
-        private int tamanho;
-        private int quantidade;
+        private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
-        public HashQuadratico(int tamanho)
+        public HashQuadratico()
         {
-            this.tamanho = tamanho;
-            tabela = new Tipo[tamanho];
-            quantidade = 0;
+            this.tabela = new Tipo[SIZE];
         }
 
         public List<Tipo> Conteudo()
         {
-            List<Tipo> conteudo = new List<Tipo>(quantidade);
-            for (int i = 0; i < tamanho; i++)
+            List<Tipo> conteudo = new List<Tipo>();
+            for (int i = 0; i < SIZE; i++)
             {
                 if (tabela[i] != null)
                 {
@@ -37,10 +34,10 @@ namespace apCaminhosEmMarte
         {
             int posicao = Hash(item);
             int tentativas = 0;
-            while (tabela[posicao] != null && !tabela[posicao].Equals(item) && tentativas < tamanho)
+            while (tabela[posicao] != null && !tabela[posicao].Equals(item) && tentativas < SIZE)
             {
                 tentativas++;
-                posicao = (posicao + (tentativas * tentativas)) % tamanho;
+                posicao = (posicao + (tentativas * tentativas)) % SIZE;
             }
             onde = posicao;
             return tabela[posicao] != null && tabela[posicao].Equals(item);
@@ -49,14 +46,15 @@ namespace apCaminhosEmMarte
         public void Inserir(Tipo item)
         {
             int posicao;
-            if (!Existe(item, out posicao))
+            if (Existe(item, out posicao))
             {
-                if (quantidade == tamanho)
+                int tentativas = 0;
+                while (tabela[posicao] != null && tentativas < SIZE)
                 {
-                    throw new InvalidOperationException("Tabela de hash cheia.");
+                    tentativas++;
+                    posicao = (posicao + (tentativas * tentativas)) % SIZE;
                 }
                 tabela[posicao] = item;
-                quantidade++;
             }
         }
 
@@ -66,7 +64,6 @@ namespace apCaminhosEmMarte
             if (Existe(item, out posicao))
             {
                 tabela[posicao] = default(Tipo);
-                quantidade--;
                 return true;
             }
             return false;
@@ -74,7 +71,7 @@ namespace apCaminhosEmMarte
 
         private int Hash(Tipo item)
         {
-            return item.GetHashCode() % tamanho;
+            return item.GetHashCode() % SIZE;
         }
     }
 }

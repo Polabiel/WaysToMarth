@@ -117,7 +117,7 @@
             this.lsbCidades.Name = "lsbCidades";
             this.lsbCidades.ScrollAlwaysVisible = true;
             this.lsbCidades.Size = new System.Drawing.Size(178, 134);
-            this.lsbCidades.TabIndex = 11;
+            this.lsbCidades.TabIndex = 0;
             // 
             // btnListar
             // 
@@ -178,6 +178,7 @@
             this.txtCidade.Name = "txtCidade";
             this.txtCidade.Size = new System.Drawing.Size(100, 20);
             this.txtCidade.TabIndex = 4;
+            this.txtCidade.TextChanged += new System.EventHandler(this.txtCidade_TextChanged);
             // 
             // label3
             // 

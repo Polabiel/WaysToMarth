@@ -44,18 +44,27 @@ namespace apCaminhosEmMarte
             using (var arquivo = new StreamReader(dlgAbrir.FileName))
             {
                 while (!arquivo.EndOfStream)
-                {
-                    Cidade umaCidade = new Cidade();
-                    umaCidade.LerRegistro(arquivo);
-                    tabela.Inserir(umaCidade);
+                    {
+                        Cidade umaCidade = new Cidade();
+                        umaCidade.LerRegistro(arquivo);
+                        tabela.Inserir(umaCidade);
+                        lsbCidades.Items.Add(new ListViewItem(new string[] { umaCidade.NomeCidade, umaCidade.X.ToString(), umaCidade.Y.ToString() }));
+                    }
                 }
             }
-        }
         catch (Exception ex)
         {
             MessageBox.Show($"Erro ao ler o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
     }
 
-   }
+        private void txtCidade_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textBox = (TextBox)sender; // Converte o objeto sender para o tipo TextBox
+            string nomeCidade = textBox.Text; // Obtém o texto digitado no campo de texto
+
+            // Faça algo com o nome da cidade...
+        }
+    }
 }

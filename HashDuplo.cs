@@ -7,23 +7,20 @@ using System.Threading.Tasks;
 namespace apCaminhosEmMarte
 {
     public class HashDuplo<Tipo> : ITabelaDeHash<Tipo>
-        where Tipo : IRegistro<Tipo>
+            where Tipo : IRegistro<Tipo>
     {
         private Tipo[] tabela;
-        private int tamanho;
-        private int quantidade;
+        private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
-        public HashDuplo(int tamanho)
+        public HashDuplo()
         {
-            this.tamanho = tamanho;
-            tabela = new Tipo[tamanho];
-            quantidade = 0;
+            this.tabela = new Tipo[SIZE];
         }
 
         public List<Tipo> Conteudo()
         {
             List<Tipo> conteudo = new List<Tipo>();
-            for (int i = 0; i < tamanho; i++)
+            for (int i = 0; i < SIZE; i++)
             {
                 if (tabela[i] != null)
                 {
@@ -37,68 +34,69 @@ namespace apCaminhosEmMarte
         {
             int posicao = Hash1(item);
             int incremento = Hash2(item);
-            int tentativas = 0;
 
-            while (tabela[posicao] != null && !tabela[posicao].Equals(item) && tentativas < tamanho)
+            for (int tentativas = 0; tentativas < SIZE; tentativas++)
             {
-                posicao = (posicao + incremento) % tamanho;
-                tentativas++;
+                int index = (posicao + (tentativas * incremento)) % SIZE;
+                if (tabela[index] != null && tabela[index].Equals(item))
+                {
+                    onde = index;
+                    return true;
+                }
             }
 
-            if (tabela[posicao] != null && tabela[posicao].Equals(item))
-            {
-                onde = posicao;
-                return true;
-            }
-            else
-            {
-                onde = -1;
-                return false;
-            }
+            onde = -1;
+            return false;
         }
 
         public void Inserir(Tipo item)
         {
-            if (quantidade == tamanho)
-            {
-                throw new InvalidOperationException("Tabela de hash está cheia.");
-            }
-
             int posicao = Hash1(item);
             int incremento = Hash2(item);
 
-            while (tabela[posicao] != null)
+            for (int tentativas = 0; tentativas < SIZE; tentativas++)
             {
-                posicao = (posicao + incremento) % tamanho;
+                int index = (posicao + (tentativas * incremento)) % SIZE;
+                if (tabela[index] == null)
+                {
+                    tabela[index] = item;
+                    return;
+                }
             }
 
-            tabela[posicao] = item;
-            quantidade++;
+            throw new Exception("Tabela de hash cheia.");
         }
 
         public bool Remover(Tipo item)
         {
-            int posicao;
-            if (Existe(item, out posicao))
+            int posicao = Hash1(item);
+            int incremento = Hash1(item);
+
+            for (int tentativas = 0; tentativas < SIZE; tentativas++)
             {
-                tabela[posicao] = default(Tipo);
-                quantidade--;
-                return true;
+                int index = (posicao + (tentativas * incremento)) % SIZE;
+                if (tabela[index] != null && tabela[index].Equals(item))
+                {
+                    tabela[index] = default(Tipo);
+                    return true;
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         private int Hash1(Tipo item)
         {
-            return item.GetHashCode() % tamanho;
+            int hashCode = item.GetHashCode();
+            int index = hashCode % SIZE;
+            return index;
         }
 
         private int Hash2(Tipo item)
         {
-            return 1 + (item.GetHashCode() % (tamanho - 1));
+            int hashCode = item.GetHashCode();
+            int index = (hashCode % (SIZE - 1)) + 1;
+            return index;
         }
     }
 }
