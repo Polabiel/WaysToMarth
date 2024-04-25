@@ -11,14 +11,13 @@ namespace apCaminhosEmMarte
     {
         private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
-        List<Tipo>[] dados;
+        private List<Tipo>[] dados;
 
         public HashLinear()
         {
             dados = new List<Tipo>[SIZE];
             for (int i = 0; i < SIZE; i++)
             {
-                // coloca em cada posição do vetor, uma lista vazia
                 dados[i] = new List<Tipo>();
             }
         }
@@ -27,9 +26,9 @@ namespace apCaminhosEmMarte
         {
             List<Tipo> conteudo = new List<Tipo>();
 
-            for (int i = 0; i < SIZE; i++)
+            foreach (var lista in dados)
             {
-                conteudo.AddRange(dados[i]);
+                conteudo.AddRange(lista);
             }
 
             return conteudo;
@@ -49,6 +48,21 @@ namespace apCaminhosEmMarte
             return onde != -1;
         }
 
+        public Tipo Buscar(string chave)
+        {
+            int index = CalcularHash(chave);
+
+            foreach (var item in dados[index])
+            {
+                if (item.Chave == chave)
+                {
+                    return item;
+                }
+            }
+
+            return default(Tipo);
+        }
+
         public bool Remover(Tipo item)
         {
             int index = CalcularHash(item);
@@ -59,6 +73,24 @@ namespace apCaminhosEmMarte
         private int CalcularHash(Tipo item)
         {
             int hash = item.GetHashCode() % SIZE;
+            int index = hash;
+
+            while (dados[index].Count > 0)
+            {
+                index = (index + 1) % SIZE;
+
+                if (index == hash)
+                {
+                    throw new Exception("Tabela de hash cheia");
+                }
+            }
+
+            return index;
+        }
+
+        private int CalcularHash(string chave)
+        {
+            int hash = chave.GetHashCode() % SIZE;
             int index = hash;
 
             while (dados[index].Count > 0)

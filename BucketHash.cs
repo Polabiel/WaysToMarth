@@ -15,7 +15,6 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         dados = new List<Tipo>[SIZE];
         for (int i = 0; i < SIZE; i++)
         {
-            // coloca em cada posição do vetor, uma lista vazia
             dados[i] = new List<Tipo>(1);
         }
     }
@@ -24,29 +23,47 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     {
         long tot = 0;
         for (int i = 0; i < chave.Length; i++)
+        {
             tot += 37 * tot + (char)chave[i];
+        }
 
-        tot = tot % dados.Length;
-        if (tot < 0)
-            tot += dados.Length;
-        return (int)tot;
+        return (int)(tot % SIZE);
     }
 
     public void Inserir(Tipo item)
     {
         int valorDeHash = Hash(item.Chave);
         if (!dados[valorDeHash].Contains(item))
+        {
             dados[valorDeHash].Add(item);
+        }
     }
 
     public bool Remover(Tipo item)
     {
         int onde = 0;
         if (!Existe(item, out onde))
+        {
             return false;
+        }
 
         dados[onde].Remove(item);
         return true;
+    }
+
+    public Tipo Buscar(string chave)
+    {
+        int posicao = Hash(chave);
+        List<Tipo> lista = dados[posicao];
+        for (int i = 0; i < lista.Count; i++)
+        {
+            Tipo item = lista[i];
+            if (item.Chave == chave)
+            {
+                return item;
+            }
+        }
+        return default(Tipo);
     }
 
     public bool Existe(Tipo item, out int posicao)
@@ -58,11 +75,11 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     public List<Tipo> Conteudo()
     {
         List<Tipo> saida = new List<Tipo>();
-        for (int i = 0; i < dados.Length; i++)
+        foreach (var lista in dados)
         {
-            if (dados[i].Count > 0)
+            if (lista.Count > 0)
             {
-                saida.AddRange(dados[i]);
+                saida.AddRange(lista);
             }
         }
         return saida;

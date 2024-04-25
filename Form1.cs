@@ -18,7 +18,7 @@ namespace apCaminhosEmMarte
       InitializeComponent();
     }
 
-    ITabelaDeHash<Cidade> tabela;
+    private ITabelaDeHash<Cidade> tabela;
 
     private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
     {
@@ -64,7 +64,21 @@ namespace apCaminhosEmMarte
             TextBox textBox = (TextBox)sender; // Converte o objeto sender para o tipo TextBox
             string nomeCidade = textBox.Text; // Obtém o texto digitado no campo de texto
 
-            // Faça algo com o nome da cidade...
+            // Procurar pelo nome da cidade na tabela de hash cidade
+            if (tabela != null)
+            {
+                Cidade cidadeEncontrada = tabela.Buscar(nomeCidade);
+                if (cidadeEncontrada != null)
+                {
+                    // Cidade encontrada, faça algo com ela
+                    MessageBox.Show($"Cidade encontrada: {cidadeEncontrada.NomeCidade}", "Cidade Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    // Cidade não encontrada
+                    MessageBox.Show("Cidade não encontrada", "Cidade Não Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 }

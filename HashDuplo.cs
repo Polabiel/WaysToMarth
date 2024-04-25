@@ -85,18 +85,26 @@ namespace apCaminhosEmMarte
             return false;
         }
 
+        public Tipo Buscar(string chave)
+        {
+            for (int i = 0; i < SIZE; i++)
+            {
+                if (tabela[i] != null && tabela[i].Chave == chave)
+                {
+                    return tabela[i];
+                }
+            }
+            return default(Tipo);
+        }
+
         private int Hash1(Tipo item)
         {
-            int hashCode = item.GetHashCode();
-            int index = hashCode % SIZE;
-            return index;
+            return item.GetHashCode() % SIZE;
         }
 
         private int Hash2(Tipo item)
         {
-            int hashCode = item.GetHashCode();
-            int index = (hashCode % (SIZE - 1)) + 1;
-            return index;
+            return (item.GetHashCode() % (SIZE - 1)) + 1;
         }
     }
 }

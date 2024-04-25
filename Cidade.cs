@@ -10,15 +10,10 @@ namespace apCaminhosEmMarte
     public class Cidade : IRegistro<Cidade>
     {
         // mapeamento da linha de dados do arquivo de cidades
-        const int
-          tamNome = 15,
-          tamX = 7,
-          tamY = 7,
-          inicioNome = 0,
-          inicioX = inicioNome + tamNome,
-          inicioY = inicioX + tamX;
+        const int tamNome = 15, tamX = 7, tamY = 7, inicioNome = 0, inicioX = inicioNome + tamNome, inicioY = inicioX + tamX;
 
         string nomeCidade;
+
         double x, y;
 
         public string Chave => nomeCidade;
@@ -28,8 +23,6 @@ namespace apCaminhosEmMarte
 
         public double Y => y;
 
-
-
         public void GravarDados(StreamWriter arquivo)
         {
             if (arquivo != null)  // arquivo foi aberto
@@ -38,6 +31,20 @@ namespace apCaminhosEmMarte
                 arquivo.WriteLine(linha);
             }
         }
+
+
+        public Cidade Buscar(string nomeCidade, ITabelaDeHash<Cidade> tabelaDeCidades)
+        {
+            Cidade cidadeEncontrada = null;
+
+            if (tabelaDeCidades != null)
+            {
+                cidadeEncontrada = tabelaDeCidades.Buscar(nomeCidade);
+            }
+
+            return cidadeEncontrada;
+        }
+
 
         public void LerRegistro(StreamReader arquivo)
         {

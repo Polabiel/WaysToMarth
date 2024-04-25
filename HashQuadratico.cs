@@ -30,6 +30,18 @@ namespace apCaminhosEmMarte
             return conteudo;
         }
 
+        public Tipo Buscar(string nomeCidade)
+        {
+            for (int i = 0; i < SIZE; i++)
+            {
+                if (tabela[i] != null && tabela[i].Chave == nomeCidade)
+                {
+                    return tabela[i];
+                }
+            }
+            return default(Tipo);
+        }
+
         public bool Existe(Tipo item, out int onde)
         {
             int posicao = Hash(item);
