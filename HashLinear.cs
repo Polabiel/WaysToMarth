@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace apCaminhosEmMarte
 {
     public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
-        where Tipo : IRegistro<Tipo>
+            where Tipo : IRegistro<Tipo>
     {
         private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
-        ArrayList[] dados;
+        List<Tipo>[] dados;
 
         public HashLinear()
         {
-            dados = new ArrayList[SIZE];
+            dados = new List<Tipo>[SIZE];
             for (int i = 0; i < SIZE; i++)
             {
-                // coloca em cada posição do vetor, um arrayList vazio
-                dados[i] = new ArrayList(1);
+                // coloca em cada posição do vetor, uma lista vazia
+                dados[i] = new List<Tipo>();
             }
         }
 
@@ -29,10 +29,7 @@ namespace apCaminhosEmMarte
 
             for (int i = 0; i < SIZE; i++)
             {
-                if (dados[i].Count > 0)
-                {
-                    conteudo.AddRange(dados[i].Cast<Tipo>());
-                }
+                conteudo.AddRange(dados[i]);
             }
 
             return conteudo;
@@ -48,27 +45,15 @@ namespace apCaminhosEmMarte
         {
             int index = CalcularHash(item);
 
-            if (dados[index].Contains(item))
-            {
-                onde = index;
-                return true;
-            }
-
-            onde = -1;
-            return false;
+            onde = dados[index].IndexOf(item);
+            return onde != -1;
         }
 
         public bool Remover(Tipo item)
         {
             int index = CalcularHash(item);
 
-            if (dados[index].Contains(item))
-            {
-                dados[index].Remove(item);
-                return true;
-            }
-
-            return false;
+            return dados[index].Remove(item);
         }
 
         private int CalcularHash(Tipo item)
