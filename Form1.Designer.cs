@@ -154,6 +154,7 @@
             this.btnInserir.TabIndex = 7;
             this.btnInserir.Text = "+";
             this.btnInserir.UseVisualStyleBackColor = true;
+            this.btnInserir.Click += new System.EventHandler(this.btnInserir_Click);
             // 
             // udY
             // 

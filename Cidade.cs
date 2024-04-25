@@ -32,6 +32,17 @@ namespace apCaminhosEmMarte
             }
         }
 
+        public Cidade(string nomeCidade, double x, double y)
+        {
+            this.nomeCidade = nomeCidade;
+            this.x = x;
+            this.y = y;
+        }
+
+        public Cidade()
+        {
+           
+        }
 
         public Cidade Buscar(string nomeCidade, ITabelaDeHash<Cidade> tabelaDeCidades)
         {

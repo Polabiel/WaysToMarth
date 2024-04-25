@@ -25,25 +25,25 @@ namespace apCaminhosEmMarte
 
     }
 
-    private void btnLerArquivo_Click(object sender, EventArgs e)
-    {
-        if (dlgAbrir.ShowDialog() != DialogResult.OK)
-            return;
-
-        if (rbBucketHash.Checked)
-            tabela = new BucketHash<Cidade>();
-        else if (rbHashLinear.Checked)
-            tabela = new HashLinear<Cidade>();
-        else if (rbHashQuadratico.Checked)
-            tabela = new HashQuadratico<Cidade>();
-        else if (rbHashDuplo.Checked)
-            tabela = new HashDuplo<Cidade>();
-
-        try
+        private void btnLerArquivo_Click(object sender, EventArgs e)
         {
-            using (var arquivo = new StreamReader(dlgAbrir.FileName))
+            if (dlgAbrir.ShowDialog() != DialogResult.OK)
+                return;
+
+            if (rbBucketHash.Checked)
+                tabela = new BucketHash<Cidade>();
+            else if (rbHashLinear.Checked)
+                tabela = new HashLinear<Cidade>();
+            else if (rbHashQuadratico.Checked)
+                tabela = new HashQuadratico<Cidade>();
+            else if (rbHashDuplo.Checked)
+                tabela = new HashDuplo<Cidade>();
+
+            try
             {
-                while (!arquivo.EndOfStream)
+                using (var arquivo = new StreamReader(dlgAbrir.FileName))
+                {
+                    while (!arquivo.EndOfStream)
                     {
                         Cidade umaCidade = new Cidade();
                         umaCidade.LerRegistro(arquivo);
@@ -52,12 +52,11 @@ namespace apCaminhosEmMarte
                     }
                 }
             }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Erro ao ler o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao ler o arquivo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-    }
 
         private void txtCidade_TextChanged(object sender, EventArgs e)
         {
@@ -79,6 +78,25 @@ namespace apCaminhosEmMarte
                     MessageBox.Show("Cidade não encontrada", "Cidade Não Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void btnInserir_Click(object sender, EventArgs e)
+        {
+            if (tabela == null)
+            {
+                MessageBox.Show("Tabela de hash não foi inicializada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string nomeCidade = txtCidade.Text;
+            int x = int.Parse(udX.Text);
+            int y = int.Parse(udY.Text);
+
+            Cidade novaCidade = new Cidade(nomeCidade,x,y);
+            tabela.Inserir(novaCidade);
+            lsbCidades.Items.Add(new ListViewItem(new string[] { novaCidade.NomeCidade, novaCidade.X.ToString(), novaCidade.Y.ToString() }));
+
+            MessageBox.Show("Cidade inserida com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

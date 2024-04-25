@@ -33,6 +33,10 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     public void Inserir(Tipo item)
     {
         int valorDeHash = Hash(item.Chave);
+        if (dados[valorDeHash] == null)
+        {
+            dados[valorDeHash] = new List<Tipo>();
+        }
         if (!dados[valorDeHash].Contains(item))
         {
             dados[valorDeHash].Add(item);
@@ -55,12 +59,15 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     {
         int posicao = Hash(chave);
         List<Tipo> lista = dados[posicao];
-        for (int i = 0; i < lista.Count; i++)
+        if (lista != null)
         {
-            Tipo item = lista[i];
-            if (item.Chave == chave)
+            for (int i = 0; i < lista.Count; i++)
             {
-                return item;
+                Tipo item = lista[i];
+                if (item.Chave == chave)
+                {
+                    return item;
+                }
             }
         }
         return default(Tipo);
@@ -69,7 +76,8 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     public bool Existe(Tipo item, out int posicao)
     {
         posicao = Hash(item.Chave);
-        return dados[posicao].Contains(item);
+        List<Tipo> lista = dados[posicao];
+        return lista != null && lista.Contains(item);
     }
 
     public List<Tipo> Conteudo()
@@ -77,7 +85,7 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         List<Tipo> saida = new List<Tipo>();
         foreach (var lista in dados)
         {
-            if (lista.Count > 0)
+            if (lista != null && lista.Count > 0)
             {
                 saida.AddRange(lista);
             }
