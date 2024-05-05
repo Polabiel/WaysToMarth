@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace apCaminhosEmMarte
 {
     public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
-            where Tipo : IRegistro<Tipo>
+                where Tipo : IRegistro<Tipo>
     {
         private Tipo[] tabela;
         private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
@@ -30,21 +30,21 @@ namespace apCaminhosEmMarte
             return conteudo;
         }
 
-        public Tipo Buscar(string nomeCidade)
+        public Tipo Buscar(string chave)
         {
-            for (int i = 0; i < SIZE; i++)
+            int posicao = Hash(chave);
+            int tentativas = 0;
+            while (tabela[posicao] != null && tabela[posicao].Chave != chave && tentativas < SIZE)
             {
-                if (tabela[i] != null && tabela[i].Chave == nomeCidade)
-                {
-                    return tabela[i];
-                }
+                tentativas++;
+                posicao = (posicao + (tentativas * tentativas)) % SIZE;
             }
-            return default(Tipo);
+            return tabela[posicao];
         }
 
         public bool Existe(Tipo item, out int onde)
         {
-            int posicao = Hash(item);
+            int posicao = Hash(item.Chave);
             int tentativas = 0;
             while (tabela[posicao] != null && !tabela[posicao].Equals(item) && tentativas < SIZE)
             {
@@ -81,9 +81,16 @@ namespace apCaminhosEmMarte
             return false;
         }
 
-        private int Hash(Tipo item)
+        private int Hash(string chave)
         {
-            return item.GetHashCode() % SIZE;
+            long tot = 0;
+            for (int i = 0; i < chave.Length; i++)
+                tot += 37 * tot + (char)chave[i];
+
+            tot = tot % SIZE;
+            if (tot < 0)
+                tot += SIZE;
+            return (int)tot;
         }
     }
 }
