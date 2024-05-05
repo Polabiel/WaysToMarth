@@ -4,18 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 class BucketHash<Tipo> : ITabelaDeHash<Tipo>
-    where Tipo : IRegistro<Tipo>
+  where Tipo : IRegistro<Tipo>
 {
     private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
-    List<Tipo>[] dados;
+    ArrayList[] dados;
 
     public BucketHash()
     {
-        dados = new List<Tipo>[SIZE];
+        dados = new ArrayList[SIZE];
         for (int i = 0; i < SIZE; i++)
         {
-            dados[i] = new List<Tipo>(1);
+            // coloca em cada posição do vetor, um arrayList vazio
+            dados[i] = new ArrayList(1);
         }
     }
 
@@ -23,73 +24,56 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
     {
         long tot = 0;
         for (int i = 0; i < chave.Length; i++)
-        {
             tot += 37 * tot + (char)chave[i];
-        }
 
-        return (int)(tot % SIZE);
+        tot = tot % dados.Length;
+        if (tot < 0)
+            tot += dados.Length;
+        return (int)tot;
     }
 
     public void Inserir(Tipo item)
     {
         int valorDeHash = Hash(item.Chave);
-        if (dados[valorDeHash] == null)
-        {
-            dados[valorDeHash] = new List<Tipo>();
-        }
         if (!dados[valorDeHash].Contains(item))
-        {
             dados[valorDeHash].Add(item);
-        }
     }
 
     public bool Remover(Tipo item)
     {
         int onde = 0;
         if (!Existe(item, out onde))
-        {
             return false;
-        }
 
         dados[onde].Remove(item);
         return true;
     }
 
-    public Tipo Buscar(string chave)
-    {
-        int posicao = Hash(chave);
-        List<Tipo> lista = dados[posicao];
-        if (lista != null)
-        {
-            for (int i = 0; i < lista.Count; i++)
-            {
-                Tipo item = lista[i];
-                if (item.Chave == chave)
-                {
-                    return item;
-                }
-            }
-        }
-        return default(Tipo);
-    }
-
     public bool Existe(Tipo item, out int posicao)
     {
         posicao = Hash(item.Chave);
-        List<Tipo> lista = dados[posicao];
-        return lista != null && lista.Contains(item);
+        return dados[posicao].Contains(item);
     }
 
     public List<Tipo> Conteudo()
     {
         List<Tipo> saida = new List<Tipo>();
-        foreach (var lista in dados)
-        {
-            if (lista != null && lista.Count > 0)
+        for (int i = 0; i < dados.Length; i++)
+            if (dados[i].Count > 0)
             {
-                saida.AddRange(lista);
+                string linha = $"{i,5} : ";
+                foreach (Tipo item in dados[i])
+                    saida.Add(item);
             }
-        }
         return saida;
+    }
+
+    public Tipo Buscar(string chave)
+    {
+        int posicao = Hash(chave);
+        foreach (Tipo item in dados[posicao])
+            if (item.Chave == chave)
+                return item;
+        return default(Tipo);
     }
 }

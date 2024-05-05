@@ -179,7 +179,6 @@
             this.txtCidade.Name = "txtCidade";
             this.txtCidade.Size = new System.Drawing.Size(100, 20);
             this.txtCidade.TabIndex = 4;
-            this.txtCidade.TextChanged += new System.EventHandler(this.txtCidade_TextChanged);
             // 
             // label3
             // 

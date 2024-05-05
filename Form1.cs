@@ -58,28 +58,6 @@ namespace apCaminhosEmMarte
             }
         }
 
-        private void txtCidade_TextChanged(object sender, EventArgs e)
-        {
-            TextBox textBox = (TextBox)sender; // Converte o objeto sender para o tipo TextBox
-            string nomeCidade = textBox.Text; // Obtém o texto digitado no campo de texto
-
-            // Procurar pelo nome da cidade na tabela de hash cidade
-            if (tabela != null)
-            {
-                Cidade cidadeEncontrada = tabela.Buscar(nomeCidade);
-                if (cidadeEncontrada != null)
-                {
-                    // Cidade encontrada, faça algo com ela
-                    MessageBox.Show($"Cidade encontrada: {cidadeEncontrada.NomeCidade}", "Cidade Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    // Cidade não encontrada
-                    MessageBox.Show("Cidade não encontrada", "Cidade Não Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
         private void btnInserir_Click(object sender, EventArgs e)
         {
             if (tabela == null)
@@ -89,8 +67,8 @@ namespace apCaminhosEmMarte
             }
 
             string nomeCidade = txtCidade.Text;
-            int x = int.Parse(udX.Text);
-            int y = int.Parse(udY.Text);
+            double x = double.TryParse(udX.Text, out x) ? x : 0;
+            double y = double.TryParse(udY.Text, out y) ? y : 0;
 
             Cidade novaCidade = new Cidade(nomeCidade,x,y);
             tabela.Inserir(novaCidade);
