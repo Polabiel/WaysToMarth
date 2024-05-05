@@ -6,17 +6,29 @@ using System.Threading.Tasks;
 
 namespace apCaminhosEmMarte
 {
+    /// <summary>
+    /// Classe HashDuplo implementa a interface ITabelaDeHash.
+    /// Esta classe implementa uma tabela de hash com método de resolução de colisões por hash duplo.
+    /// </summary>
     public class HashDuplo<Tipo> : ITabelaDeHash<Tipo>
                 where Tipo : IRegistro<Tipo>
     {
         private Tipo[] tabela;
         private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
+        /// <summary>
+        /// Construtor da classe HashDuplo.
+        /// Inicializa a tabela de hash com o tamanho definido pela constante SIZE.
+        /// </summary>
         public HashDuplo()
         {
             this.tabela = new Tipo[SIZE];
         }
 
+        /// <summary>
+        /// Insere um item na tabela de hash.
+        /// Se houver colisão, utiliza o método de hash duplo para encontrar uma nova posição.
+        /// </summary>
         public void Inserir(Tipo item)
         {
             int hash = CalcularHash(item.Chave);
@@ -40,6 +52,10 @@ namespace apCaminhosEmMarte
             }
         }
 
+        /// <summary>
+        /// Remove um item da tabela de hash.
+        /// Se o item não for encontrado, retorna false.
+        /// </summary>
         public bool Remover(Tipo item)
         {
             int hash = CalcularHash(item.Chave);
@@ -70,6 +86,10 @@ namespace apCaminhosEmMarte
             return false;
         }
 
+        /// <summary>
+        /// Verifica se um item existe na tabela de hash.
+        /// Retorna a posição do item na tabela, se encontrado.
+        /// </summary>
         public bool Existe(Tipo item, out int onde)
         {
             int hash = CalcularHash(item.Chave);
@@ -101,6 +121,9 @@ namespace apCaminhosEmMarte
             return false;
         }
 
+        /// <summary>
+        /// Retorna o conteúdo da tabela de hash.
+        /// </summary>
         public List<Tipo> Conteudo()
         {
             List<Tipo> conteudo = new List<Tipo>();
@@ -114,6 +137,10 @@ namespace apCaminhosEmMarte
             return conteudo;
         }
 
+        /// <summary>
+        /// Busca um item na tabela de hash pela chave.
+        /// Se o item não for encontrado, retorna o valor padrão do tipo.
+        /// </summary>
         public Tipo Buscar(string chave)
         {
             int hash = CalcularHash(chave);
@@ -142,6 +169,9 @@ namespace apCaminhosEmMarte
             return default(Tipo);
         }
 
+        /// <summary>
+        /// Calcula o valor de hash para uma chave.
+        /// </summary>
         private int CalcularHash(string chave)
         {
             int hash = 0;
@@ -152,6 +182,9 @@ namespace apCaminhosEmMarte
             return hash;
         }
 
+        /// <summary>
+        /// Calcula o valor do passo para o método de hash duplo.
+        /// </summary>
         private int CalcularStep(string chave)
         {
             int step = 1;

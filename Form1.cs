@@ -25,6 +25,10 @@ namespace apCaminhosEmMarte
 
     }
 
+        /// <summary>
+        /// Evento disparado quando o usuário clica no botão para ler o arquivo de cidades.
+        /// Lê o arquivo de cidades e insere as cidades na tabela de hash.
+        /// </summary>
         private void btnLerArquivo_Click(object sender, EventArgs e)
         {
             if (dlgAbrir.ShowDialog() != DialogResult.OK)
@@ -58,6 +62,10 @@ namespace apCaminhosEmMarte
             }
         }
 
+        /// <summary>
+        /// Evento disparado quando o usuário clica no botão para inserir uma cidade.
+        /// Insere uma cidade na tabela de hash.
+        /// </summary>
         private void btnInserir_Click(object sender, EventArgs e)
         {
             if (tabela == null)
@@ -77,6 +85,10 @@ namespace apCaminhosEmMarte
             MessageBox.Show("Cidade inserida com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Evento disparado quando o usuário clica no botão para remover uma cidade.
+        /// Remove uma cidade da tabela de hash.
+        /// </summary>
         private void btnRemover_Click(object sender, EventArgs e)
         {
             if (tabela == null)
@@ -103,6 +115,10 @@ namespace apCaminhosEmMarte
             MessageBox.Show("Cidade removida com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Evento disparado quando o usuário clica no botão para buscar uma cidade.
+        /// Busca uma cidade na tabela de hash.
+        /// </summary>
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (tabela == null)
@@ -128,6 +144,10 @@ namespace apCaminhosEmMarte
             }
         }
 
+        /// <summary>
+        /// Evento disparado quando o usuário clica no botão para listar as informações de uma cidade.
+        /// Lista as informações de uma cidade.
+        /// </summary>
         private void btnListar_Click(object sender, EventArgs e)
         {
             if (lsbCidades.SelectedItems.Count == 0)

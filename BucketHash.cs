@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Classe BucketHash implementa a interface ITabelaDeHash.
+/// Esta classe implementa uma tabela de hash com método de resolução de colisões por bucket.
+/// </summary>
 class BucketHash<Tipo> : ITabelaDeHash<Tipo>
   where Tipo : IRegistro<Tipo>
 {
@@ -10,6 +14,10 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
 
     ArrayList[] dados;
 
+    /// <summary>
+    /// Construtor da classe BucketHash.
+    /// Inicializa a tabela de hash com o tamanho definido pela constante SIZE.
+    /// </summary>
     public BucketHash()
     {
         dados = new ArrayList[SIZE];
@@ -20,6 +28,9 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         }
     }
 
+    /// <summary>
+    /// Calcula o valor de hash para uma chave.
+    /// </summary>
     public int Hash(string chave)
     {
         long tot = 0;
@@ -32,6 +43,9 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         return (int)tot;
     }
 
+    /// <summary>
+    /// Insere um item na tabela de hash.
+    /// </summary>
     public void Inserir(Tipo item)
     {
         int valorDeHash = Hash(item.Chave);
@@ -39,6 +53,9 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
             dados[valorDeHash].Add(item);
     }
 
+    /// <summary>
+    /// Remove um item da tabela de hash.
+    /// </summary>
     public bool Remover(Tipo item)
     {
         int onde = 0;
@@ -49,12 +66,19 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         return true;
     }
 
+    /// <summary>
+    /// Verifica se um item existe na tabela de hash.
+    /// Retorna a posição do item na tabela, se encontrado.
+    /// </summary>
     public bool Existe(Tipo item, out int posicao)
     {
         posicao = Hash(item.Chave);
         return dados[posicao].Contains(item);
     }
 
+    /// <summary>
+    /// Retorna o conteúdo da tabela de hash.
+    /// </summary>
     public List<Tipo> Conteudo()
     {
         List<Tipo> saida = new List<Tipo>();
@@ -68,6 +92,10 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         return saida;
     }
 
+    /// <summary>
+    /// Busca um item na tabela de hash pela chave.
+    /// Se o item não for encontrado, retorna o valor padrão do tipo.
+    /// </summary>
     public Tipo Buscar(string chave)
     {
         int posicao = Hash(chave);
