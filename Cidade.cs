@@ -41,7 +41,7 @@ namespace apCaminhosEmMarte
 
         public Cidade()
         {
-           
+
         }
 
         public Cidade Buscar(string nomeCidade, ITabelaDeHash<Cidade> tabelaDeCidades)
@@ -70,6 +70,28 @@ namespace apCaminhosEmMarte
                     x = double.Parse(strX);
                     y = double.Parse(linhaLida.Substring(inicioY, tamY));
                 }
+        }
+
+        public override string ToString()
+        {
+            return $"{nomeCidade} ({x},{y})";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Cidade other = (Cidade)obj;
+
+            return nomeCidade == other.nomeCidade && x == other.x && y == other.y;
+        }
+
+        public override int GetHashCode()
+        {
+            return nomeCidade.GetHashCode() ^ x.GetHashCode() ^ y.GetHashCode();
         }
     }
 }

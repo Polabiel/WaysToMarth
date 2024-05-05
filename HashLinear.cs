@@ -12,13 +12,16 @@ namespace apCaminhosEmMarte
         private const int SIZE = 131; // para gerar mais colisões; o ideal é primo > 100
 
         private List<Tipo>[] dados;
+        private int[] hashCodes;
 
         public HashLinear()
         {
             dados = new List<Tipo>[SIZE];
+            hashCodes = new int[SIZE];
             for (int i = 0; i < SIZE; i++)
             {
                 dados[i] = new List<Tipo>();
+                hashCodes[i] = -1;
             }
         }
 
@@ -36,74 +39,57 @@ namespace apCaminhosEmMarte
 
         public void Inserir(Tipo item)
         {
-            int index = CalcularHash(item);
+            int index = Hash(item);
+            if (hashCodes[index] == -1)
+            {
+                hashCodes[index] = item.GetHashCode();
+            }
             dados[index].Add(item);
         }
 
         public bool Existe(Tipo item, out int onde)
         {
-            int index = CalcularHash(item);
+            int index = Hash(item);
 
-            onde = dados[index].IndexOf(item);
-            return onde != -1;
+            if (hashCodes[index] == item.GetHashCode())
+            {
+                onde = dados[index].IndexOf(item);
+                return onde != -1;
+            }
+
+            onde = -1;
+            return false;
         }
 
         public Tipo Buscar(string chave)
         {
-            int index = CalcularHash(chave);
-
-            foreach (var item in dados[index])
+            int posicao = Hash(chave);
+            foreach (Tipo item in dados[posicao])
             {
                 if (item.Chave == chave)
                 {
                     return item;
                 }
             }
-
             return default(Tipo);
         }
 
         public bool Remover(Tipo item)
         {
-            int index = CalcularHash(item);
+            int index = Hash(item);
 
             return dados[index].Remove(item);
         }
-
-        private int CalcularHash(Tipo item)
+        public int Hash(Tipo item)
         {
-            int hash = item.GetHashCode() % SIZE;
-            int index = hash;
-
-            while (dados[index].Count > 0)
-            {
-                index = (index + 1) % SIZE;
-
-                if (index == hash)
-                {
-                    throw new Exception("Tabela de hash cheia");
-                }
-            }
-
-            return index;
+            return Math.Abs(item.GetHashCode()) % SIZE;
         }
 
-        private int CalcularHash(string chave)
+        public int Hash(string chave)
         {
-            int hash = chave.GetHashCode() % SIZE;
-            int index = hash;
-
-            while (dados[index].Count > 0)
-            {
-                index = (index + 1) % SIZE;
-
-                if (index == hash)
-                {
-                    throw new Exception("Tabela de hash cheia");
-                }
-            }
-
-            return index;
+            return Math.Abs(chave.GetHashCode()) % SIZE;
         }
+
+        
     }
 }

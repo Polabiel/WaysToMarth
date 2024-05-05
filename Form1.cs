@@ -76,5 +76,74 @@ namespace apCaminhosEmMarte
 
             MessageBox.Show("Cidade inserida com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void btnRemover_Click(object sender, EventArgs e)
+        {
+            if (tabela == null)
+            {
+                MessageBox.Show("Tabela de hash não foi inicializada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (lsbCidades.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Nenhuma cidade selecionada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ListViewItem selectedCityItem = (ListViewItem)lsbCidades.SelectedItems[0];
+            string nomeCidade = selectedCityItem.SubItems[0].Text;
+            double x = double.Parse(selectedCityItem.SubItems[1].Text);
+            double y = double.Parse(selectedCityItem.SubItems[2].Text);
+
+            Cidade cidadeRemovida = new Cidade(nomeCidade, x, y);
+            tabela.Remover(cidadeRemovida);
+            lsbCidades.Items.Remove(selectedCityItem);
+
+            MessageBox.Show("Cidade removida com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (tabela == null)
+            {
+                MessageBox.Show("Tabela de hash não foi inicializada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string nomeCidade = txtCidade.Text;
+            double x = double.TryParse(udX.Text, out x) ? x : 0;
+            double y = double.TryParse(udY.Text, out y) ? y : 0;
+
+            Cidade cidadeBuscada = new Cidade(nomeCidade, x, y);
+            Cidade cidadeEncontrada = cidadeBuscada.Buscar(nomeCidade, tabela);
+
+            if (cidadeEncontrada != null && cidadeEncontrada.NomeCidade == cidadeBuscada.NomeCidade)
+            {
+                MessageBox.Show($"Nome: {cidadeEncontrada.NomeCidade}\nX: {cidadeEncontrada.X}\nY: {cidadeEncontrada.Y}", "Informações da Cidade", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Cidade buscada: {cidadeBuscada.NomeCidade}\nCidade encontrada: {(cidadeEncontrada != null ? cidadeEncontrada.NomeCidade : "Não encontrada")}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnListar_Click(object sender, EventArgs e)
+        {
+            if (lsbCidades.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Nenhuma cidade selecionada", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ListViewItem selectedCityItem = (ListViewItem)lsbCidades.SelectedItems[0];
+            string nomeCidade = selectedCityItem.SubItems[0].Text;
+            double x = double.Parse(selectedCityItem.SubItems[1].Text);
+            double y = double.Parse(selectedCityItem.SubItems[2].Text);
+
+            Cidade cidadeSelecionada = new Cidade(nomeCidade, x, y);
+
+            MessageBox.Show($"Nome: {cidadeSelecionada.NomeCidade}\nX: {cidadeSelecionada.X}\nY: {cidadeSelecionada.Y}", "Informações da Cidade", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

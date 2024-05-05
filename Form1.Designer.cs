@@ -127,6 +127,7 @@
             this.btnListar.Size = new System.Drawing.Size(40, 30);
             this.btnListar.TabIndex = 10;
             this.btnListar.UseVisualStyleBackColor = true;
+            this.btnListar.Click += new System.EventHandler(this.btnListar_Click);
             // 
             // btnBuscar
             // 
@@ -136,6 +137,7 @@
             this.btnBuscar.Size = new System.Drawing.Size(40, 30);
             this.btnBuscar.TabIndex = 9;
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnRemover
             // 
@@ -145,6 +147,7 @@
             this.btnRemover.TabIndex = 8;
             this.btnRemover.Text = "-";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // btnInserir
             // 
